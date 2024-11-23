@@ -1,0 +1,22 @@
+name: Upload Existing MSI to Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # バージョンタグが付いたプッシュに反応 (例: v1.0, v2.1.0)
+
+jobs:
+  upload-msi:
+    runs-on: windows-latest  # Windows環境を指定
+
+    steps:
+    # リポジトリのコードをチェックアウト
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # リリースに .msi ファイルをアップロード
+    - name: Upload MSI to Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: S-Calc_Setup.msi  # MSIファイルのリポジトリ内のパスを指定
+        token: ${{ secrets.GITHUB_TOKEN }}
